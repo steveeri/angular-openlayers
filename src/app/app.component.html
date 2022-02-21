@@ -1,7 +1,16 @@
-<div class="toolbar">
-  <button class="button" [disabled]="!geolocation" (click)="locate()">My position</button>
-  <button class="button" (click)="geo.setSource('osm')">OSM</button>
-  <button class="button" (click)="geo.setSource('stamen')">Stamen</button>
-</div>
+<form [formGroup]="theForm">
+
+  <div class="toolbar">
+    <button class="button" [disabled]="!geolocation" (click)="locate()">My position</button>
+    <button class="button" (click)="geo.setSource('osm')">OSM</button>
+    <button class="button" (click)="geo.setSource('stamen')">Stamen</button>
+    <span class="divider">
+      <input type="text" class="form-control" formControlName="lat" maxlength="20" ng-class="'is-invalid'" placeholder="0" required> &nbsp;
+      <input type="text" class="form-control" formControlName="long" maxlength="20" ng-class="'is-invalid'" placeholder="0" required>
+      <button class="button" (click)="navigateToLatLong()">Navigate to Lat-Long Coordinates</button>
+    </span>
+  </div>
+
+</form>
 
 <div id="map" class="map"></div>

@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { GeoService } from '../model/geo.service';
 
 @Component({
@@ -8,9 +9,17 @@ import { GeoService } from '../model/geo.service';
 })
 export class AppComponent implements OnInit, AfterViewInit {
 
+  theForm: FormGroup;
+  
   geolocation: Geolocation;
 
-  constructor(public geo: GeoService) {
+
+  constructor(fb: FormBuilder, public geo: GeoService) {
+
+    this.theForm = fb.group({
+      lat: [''],
+      long: ['']
+    });
   }
 
   ngOnInit() {
@@ -19,6 +28,15 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.geo.updateSize();
+  }
+
+  navigateToLatLong() {
+    debugger
+    if (this.theForm.controls.lat.value.trim() !== "" && this.theForm.controls.long.value.trim() !== "") { 
+      navigator.geolocation.getCurrentPosition(position => {
+        this.geo.setView(10, [Number(this.theForm.controls.long.value.trim()), Number(this.theForm.controls.lat.value.trim())]);
+      });
+    };
   }
 
   locate() {
